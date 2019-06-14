@@ -100,3 +100,12 @@ ${HOSTNAME}:${LOGNAME}:${PWD}>
 7            反白显示
 8            不可见
 ```
+## 其他配置文件
+1. /etc/man_db.conf 或者 /etc/manpath.config
+指定`man`文档的路径
+
+2. ~/.bash_history
+记录历史命令
+
+3. ~/.bash_logout
+配置用户注销bash后，系统进行的动作
