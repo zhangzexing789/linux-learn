@@ -61,7 +61,23 @@ export PATH
 -  依据不同的 UID 规范出提示字符 就是 PS1 变量
 -  呼叫 /etc/profile.d/\*.sh 的设定
 
-### PS1变量
+## 其他配置文件
+1. /etc/man_db.conf 或者 /etc/manpath.config
+指定`man`文档的路径
+
+2. ~/.bash_history
+记录历史命令
+
+3. ~/.bash_logout
+配置用户注销bash后，系统进行的动作
+
+## 配置文件的加载顺序
+1. login shell: /etc/profile --> /etc/profile.d --> ~/.bash_profile --> ~/.bash_login --> ~/.profile --> ~/.bashrc
+2. non_login shell: ~/.bashrc
+
+注意：因为存在 ~/.bash_profile ， ~/.bash_login ， ~/.profile 后面的文件将覆盖前面的，所以我这里的建议是只保留 .profile 文件，这样配置将永久有效。
+
+## PS1变量
 
 ```
 thadcdlifc01:aappa01:/user/aappa01> echo $PS1
@@ -100,12 +116,3 @@ ${HOSTNAME}:${LOGNAME}:${PWD}>
 7            反白显示
 8            不可见
 ```
-## 其他配置文件
-1. /etc/man_db.conf 或者 /etc/manpath.config
-指定`man`文档的路径
-
-2. ~/.bash_history
-记录历史命令
-
-3. ~/.bash_logout
-配置用户注销bash后，系统进行的动作

@@ -10,7 +10,6 @@ history (选项)（参数）
 
 3. 选项
 ```
-
 -c：清空当前shell内存中的历史命令；
 -a：将历史命令缓冲区中命令写入历史命令文件histfiles中，默认写入 ~/.bash_history ；
 -r：将历史命令文件中的命令读入当前shell的历史命令缓冲区；
@@ -22,6 +21,7 @@ history (选项)（参数）
 n: 指定要显示的历史命令数量
 ```
 5. 实例
+
 ```
 列出目前最近的 3 笔资料
 [dmtsai@study ~]$ history 3 1019 history 1020 history 1021 history 3

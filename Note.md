@@ -17,7 +17,47 @@ shell hello
  - 若该变量需要在其他子程序执行，则 需要以 export 来使变量变成环境变量
  - 取消变量的方法为使用 unset ：`unset 变量名称`例如取消
 
- 2. 命令的执行顺序
+2. 变量的分类
+ - 内部变量：系统提供，不用定义，不能修改
+ ```
+ $n     $1 表示第一个参数，$2 表示第二个参数 ...
+ $#     命令行参数的个数
+ $0     当前程序的名称
+ $?     前一个命令或函数的返回码
+ $*     以"参数1 参数2 ... " 形式保存所有参数
+ $@     以"参数1" "参数2" ... 形式保存所有参数
+ $$     本程序的(进程ID号)PID
+ ```
+ - 环境变量：系统提供，不用定义，可以修改,可以利用export将用户变量转为环境变量.
+ 有以下两部分：
+    - 系统设置：HOME,LOGNAME,MAIL,PATH,PS1,PWD,SHELL,TERM等
+    - 用户设置，由export命令导出的
+ - 用户变量（私有变量,本地变量）：用户定义，可以修改
+
+2. 变量命令
+ - set：显示当前 Shell 所有变量，包括其内建环境变量（与 Shell 外观等相关），用户自定义变量及导出的环境变量，即包含了 env 和 export 命令的变量。
+ - env：显示当前用户的环境变量
+ - export：显示(设置)当前导出成环境变量的shell变量(注意：export为bash或类bash私有的命令)
+ - unset 删除变量
+ - readonly 将变量变为只读，所以无法删除
+
+ ```
+ [root@linux ~]# aaa=bbb            #声明变量并赋值
+ [root@linux ~]# echo $aaa          #显示变量值
+ bbb
+ [root@linux ~]# set|grep aaa       #查找并显示指定shell变量
+ aaa=bbb
+ [root@linux ~]# env|grep aaa       #这里找不到，因为还未声明为环境变量
+ [root@linux ~]# export aaa         #声明为环境变量
+ [root@linux ~]# env|grep aaa       #找到了
+ aaa=bbb
+ [root@linux ~]# readonly aaa       #将变量aaa变成只读
+ [root@linux ~]# unset aaa
+-bash: unset: aaa: cannot unset: readonly variable  #删除报错
+
+ ```
+
+3. 命令的执行顺序
  a. 以相对 绝对路径执行指令，例如『 /bin/ls 』或『 ./ls 』；
  b. 由 alias 找到该指令来执行；
  c. 由 bash 内建的 (builtin) 指令来执行；
@@ -32,4 +72,18 @@ echo is /usr/bin/echo
  ```
  以上的echo命令就是按照alias，builtin，$PATH的顺序去查找echo指令
 
- 3. 
+4. 编辑 .profile 文件出生成 .profile.swp 文件
+
+ 由于vi /etc/profile还没有编辑完成，保存退出，突然断电 或其他原因导致编辑窗口关闭了，系统为保护文件，产生一个备份文件/etc/.profile.swp，保存着上次未保存时的文件状态，在下次使用vi打开/etc/profile就会读取到/etc/.profile.swp出现这种警告。
+
+ 也就出现了以下选项：
+ - [O]pen Read-Only, 只读
+ - [E]pdit anyway    强制进入编辑
+ - [R]ecover,    恢复到上次未保存状态
+ - [D]elete it,  直接删除/etc/.profile.swp，
+ - [Q]uit, 退出
+ - [A]bort:  中断
+
+ 选择操作后要删除.profile.swp 文件。
+
+ 5.
