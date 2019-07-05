@@ -86,4 +86,8 @@ echo is /usr/bin/echo
 
  选择操作后要删除.profile.swp 文件。
 
- 5.
+ 5.查看linux 版本
+ - 内核版本
+ `uname -a`或者`cat /proc/version`
+ - 系统版本
+ `lsb_release -a `
