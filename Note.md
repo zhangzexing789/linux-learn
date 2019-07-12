@@ -8,8 +8,8 @@
 `var='lang is $LANG'`  则`echo $var`  可得`lang is $LANG`
  - 使用转义字符`\`转移特殊符号，如[enter],$,\,空格,'',""等
 ```
-thadcdlifc01:aappa01:/user/aappa01> test=shell\ hello
-thadcdlifc01:aappa01:/user/aappa01> echo $test
+hostname:username:/user/aappa01> test=shell\ hello
+hostname:username:/user/aappa01> echo $test
 shell hello
 ```
  - 增加变量内容

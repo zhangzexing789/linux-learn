@@ -10,9 +10,9 @@
 - -s ： 接受或返回一个代表掩码的字符形式
 
 ```
-thadcdlifc01:aappa01:/user/aappa01> umask
+hostname:username:/user/aappa01> umask
 0022
-thadcdlifc01:aappa01:/user/aappa01> umask -S
+hostname:username:/user/aappa01> umask -S
 u=rwx,g=rx,o=rx    #即是766
 ```
 # 文件权限符号

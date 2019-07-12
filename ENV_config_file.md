@@ -80,7 +80,7 @@ export PATH
 ## PS1变量
 
 ```
-thadcdlifc01:aappa01:/user/aappa01> echo $PS1
+hostname:username:/user/aappa01> echo $PS1
 ${HOSTNAME}:${LOGNAME}:${PWD}>
 ```
 有以下设置
