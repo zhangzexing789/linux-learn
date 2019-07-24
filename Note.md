@@ -91,3 +91,46 @@ echo is /usr/bin/echo
  `uname -a`或者`cat /proc/version`
  - 系统版本
  `lsb_release -a `
+
+
+ 6. 开启防火墙
+
+使用命令行工具`firewall-cmd`进行管理
+ - 默认已安装或者root用户使用`yum install -y firewalld`进行安装
+ - 启用在开机启动防火墙
+ ```
+systemctl enable firewalld
+ ```
+ - 重启
+ ```
+systemctl restart firewalld
+ ```
+ - 检查防火墙状态
+ ```
+systemctl status firewalld.service
+ ```
+ - 启动
+ ```
+systemctl start firewalld.service
+ ```
+ - 停止
+ ```
+ systemctl stop firewalld.service
+ ```
+ - list allowed services
+ ```
+firewall-cmd --list-services
+ ```
+ - list allowed ports
+ ```
+ firewall-cmd --list-ports
+ ```
+ - To Enable all the incoming ports for a service
+```
+firewall-cmd --permanent --zone=public --add-service=http
+```
+remember to restart firewall service
+ - Allow traffic on an incoming port                                                                       
+```
+firewall-cmd --permanent --add-port=2222/tcp
+```
