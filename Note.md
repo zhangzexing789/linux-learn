@@ -117,20 +117,23 @@ systemctl start firewalld.service
  ```
  systemctl stop firewalld.service
  ```
- - list allowed services
+ - 列出允许的服务
  ```
 firewall-cmd --list-services
  ```
- - list allowed ports
+ - 列出允许的端口
  ```
  firewall-cmd --list-ports
  ```
- - To Enable all the incoming ports for a service
+ - 启用服务的所有传入端口
 ```
 firewall-cmd --permanent --zone=public --add-service=http
 ```
 remember to restart firewall service
- - Allow traffic on an incoming port                                                                       
+ - 开启指定端口                                                                      
 ```
-firewall-cmd --permanent --add-port=2222/tcp
+firewall-cmd --permanent --zone=public --add-port=2222/tcp
 ```
+
+7. /etc/hosts , /etc/hostname 和 /etc/sysconfig/network
+https://www.jb51.net/LINUXjishu/77534.html
