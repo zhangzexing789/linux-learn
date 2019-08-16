@@ -150,3 +150,8 @@ su USERNAME切换用户后，不改变原用户的工作目录，及其他环境
 是无须登录root，也不需要root密码即可执行root命令，root用户通过使用visudo命令编辑sudo的配置文件/etc/sudoers，才可以授权其他普通用户执行sudo命令。
 
  [参考链接](https://www.cnblogs.com/xd502djj/p/6641475.html)
+
+9. 使用vim 查看和文件编码转换
+  - 查看：`:set fileencoding`
+  - 转换为utf-8：`:set fileencoding=utf-8`
+
