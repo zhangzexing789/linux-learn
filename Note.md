@@ -159,3 +159,9 @@ su USERNAME切换用户后，不改变原用户的工作目录，及其他环境
   - 查看：`:set fileencoding`
   - 转换为utf-8：`:set fileencoding=utf-8`
 
+# 查看用户的所属组
+```
+groups 查看当前登录用户的组内成员
+groups gliethttp 查看gliethttp用户所在的组,以及组内成员
+whoami 查看当前登录用户名
+```

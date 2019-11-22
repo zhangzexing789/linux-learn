@@ -30,7 +30,21 @@ netstat (选项)
 -x或--unix：此参数的效果和指定"-A unix"参数相同；
 --ip或--inet：此参数的效果和指定"-A inet"参数相同。
 ```
-4. 实例
+4. TCP连接状态
+- CLOSED：初始状态，表示没有任何连接。
+- LISTEN：Server端的某个Socket正在监听来自远方的TCP端口的连接请求。
+- SYN_SENT：发送连接请求后等待确认信息。当客户端Socket进行Connect连接时，会首先发送SYN包，随即进入SYN_SENT状态，然后等待Server端发送三次握手中的第2个包。
+- SYN_RECEIVED：收到一个连接请求后回送确认信息和对等的连接请求，然后等待确认信息。通常是建立TCP连接的三次握手过程中的一个中间状态，表示Server端的Socket接收到来自Client的SYN包，并作出回应。
+- ESTABLISHED：表示连接已经建立，可以进行数据传输。
+- FIN_WAIT_1：主动关闭连接的一方等待对方返回ACK包。若Socket在ESTABLISHED状态下主动关闭连接并向对方发送FIN包（表示己方不再有数据需要发送），则进入FIN_WAIT_1状态，等待对方返回ACK包，此后还能读取数据，但不能发送数据。在正常情况下，无论对方处于何种状态，都应该马上返回ACK包，所以FIN_WAIT_1状态一般很难见到。
+- FIN_WAIT_2：主动关闭连接的一方收到对方返回的ACK包后，等待对方发送FIN包。处于FIN_WAIT_1状态下的Socket收到了对方返回的ACK包后，便进入FIN_WAIT_2状态。由于FIN_WAIT_2状态下的Socket需要等待对方发送的FIN包，所有常常可以看到。若在FIN_WAIT_1状态下收到对方发送的同时带有FIN和ACK的包时，则直接进入TIME_WAIT状态，无须经过FIN_WAIT_2状态。
+- TIME_WAIT：主动关闭连接的一方收到对方发送的FIN包后返回ACK包（表示对方也不再有数据需要发送，此后不能再读取或发送数据），然后等待足够长的时间（2MSL）以确保对方接收到ACK包（考虑到丢失ACK包的可能和迷路重复数据包的影响），最后回到CLOSED状态，释放网络资源。
+- CLOSE_WAIT：表示被动关闭连接的一方在等待关闭连接。当收到对方发送的FIN包后（表示对方不再有数据需要发送），相应的返回ACK包，然后进入CLOSE_WAIT状态。在该状态下，若己方还有数据未发送，则可以继续向对方进行发送，但不能再读取数据，直到数据发送完毕。
+- LAST_ACK：被动关闭连接的一方在CLOSE_WAIT状态下完成数据的发送后便可向对方发送FIN包（表示己方不再有数据需要发送），然后等待对方返回ACK包。收到ACK包后便回到CLOSED状态，释放网络资源。
+- CLOSING：比较罕见的例外状态。正常情况下，发送FIN包后应该先收到（或同时收到）对方的ACK包，再收到对方的FIN包，而CLOSING状态表示发送FIN包后并没有收到对方的ACK包，却已收到了对方的FIN包。有两种情况可能导致这种状态：其一，如果双方几乎在同时关闭连接，那么就可能出现双方同时发送FIN包的情况；其二，如果ACK包丢失而对方的FIN包很快发出，也会出现FIN先于ACK到达。
+
+
+5. 实例
  - 显示监听状态的TCP或者UDP端口
  ```
  [root@edc01 ~]# netstat -tl
@@ -103,3 +117,40 @@ udp6       0      0 edchadoop01:ntp         [::]:*                              
 udp6       0      0 localhost:ntp           [::]:*                              root       43056      -                   
 udp6       0      0 [::]:ntp                [::]:*                              root       43050      -                   
 ```
+- 持续监控监听端口的启动情况
+```
+> netstat -ltc
+```
+- 查看某个端口或者IP的连接情况
+```
+> netstat -anp | grep 60008
+
+(Not all processes could be identified, non-owned process info
+ will not be shown, you would have to be root to see it all.)
+tcp6       0      0 :::60008                :::*                    LISTEN      36337/java          
+tcp6       0      0 10.238.18.4:60008       10.238.16.132:49430     ESTABLISHED 36337/java          
+tcp6       0      0 10.238.18.4:60008       10.238.16.132:49319     TIME_WAIT   -                   
+tcp6       0      0 10.238.18.4:60008       10.238.16.145:62421     ESTABLISHED 36337/java          
+tcp6       0      0 10.238.18.4:60008       10.238.16.145:62755     ESTABLISHED 36337/java          
+tcp6       0      0 10.238.18.4:60008       10.238.16.132:64724     ESTABLISHED 36337/java          
+tcp6       0      0 10.238.18.4:60008       10.238.16.132:64942     ESTABLISHED 36337/java          
+tcp6       0      0 10.238.18.4:60008       10.238.16.145:62420     ESTABLISHED 36337/java
+```
+- 统计TCP连接数
+
+```
+> netstat -n | awk '/^tcp/ {++S[$NF]} END {for(a in S) print a, S[a]}'
+
+ESTABLISHED 751
+TIME_WAIT 789
+
+```
+或者
+```
+> ss -s
+
+Total: 1453 (kernel 0)
+TCP:   1540 (estab 751, closed 725, orphaned 0, synrecv 0, timewait 721/0), ports 0
+
+```
+

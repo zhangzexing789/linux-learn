@@ -116,3 +116,65 @@ ${HOSTNAME}:${LOGNAME}:${PWD}>
 7            反白显示
 8            不可见
 ```
+## 配置ssh passwordless免密码登陆
+- server info
+
+    - local server: edc 
+    - remote server: hadoop
+    - both user: infa
+- generate public key 
+```
+[infa@edc ~]$ ssh-keygen -t rsa
+Generating public/private rsa key pair.
+Enter file in which to save the key (/home/infa/.ssh/id_rsa):
+Created directory '/home/infa/.ssh'.
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+Your identification has been saved in /home/infa/.ssh/id_rsa.
+Your public key has been saved in /home/infa/.ssh/id_rsa.pub.
+The key fingerprint is:
+SHA256:oJ7b2ZHMSSxOhe+F0e212JO4S+7EN1oqWiAspoYwrEk infa@edc
+The key's randomart image is:
++---[RSA 2048]----+
+|                 |
+|       . . .     |
+|      o o . . .  |
+|.    o = o . = o |
+|oE  + = S . + =  |
+|++ + = B = . . . |
+|+ o o . B . = +  |
+| .   o o o.+ * . |
+|    . o o. o*    |
++----[SHA256]-----+
+
+```
+
+- copy public key to target remote server
+```
+[infa@edc ~]$ ssh-copy-id -i ~/.ssh/id_rsa.pub infa@hadoopServer
+/usr/bin/ssh-copy-id: INFO: Source of key(s) to be installed: "/home/infa/.ssh/id_rsa.pub"
+The authenticity of host 'edchadoop.wmeuc3roqkoe3cqomiypa5wjac.hx.internal.cloudapp.net (10.0.0.6)' can't be established.
+ECDSA key fingerprint is SHA256:LahsWGO2IZyrxF/5mGKR/SU1Sug+rXFZIhlGEULFHhk.
+ECDSA key fingerprint is MD5:3d:02:fb:7f:6a:00:79:52:5d:5d:98:53:4c:0f:84:05.
+Are you sure you want to continue connecting (yes/no)? yes
+/usr/bin/ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are already installed
+/usr/bin/ssh-copy-id: INFO: 1 key(s) remain to be installed -- if you are prompted now it is to install the new keys
+Password:
+Number of key(s) added: 1
+
+Now try logging into the machine, with:   "ssh 'infa@edchadoop.wmeuc3roqkoe3cqomiypa5wjac.hx.internal.cloudapp.net'"
+and check to make sure that only the key(s) you wanted were added.
+
+```
+- verify passwordless
+```
+[infa@edc ~]$ ssh infa@hadoopServer
+```
+
+- 完成以上步骤可能出现仍然需要输入密码的问题
+请确保用户的home目录及其~/.ssh 目录对group没有写权限，否则ssh免密将失效，即
+```
+chmod g-w /home/infa
+chmod g-w /home/infa/.ssh
+chmod g-w /home/infa/.ssh/authorized_keys
+```
