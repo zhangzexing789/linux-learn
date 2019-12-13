@@ -178,3 +178,5 @@ chmod g-w /home/infa
 chmod g-w /home/infa/.ssh
 chmod g-w /home/infa/.ssh/authorized_keys
 ```
+## 配置ssh 连接时间
+https://www.cnblogs.com/Black-Hawk/articles/10651895.html
