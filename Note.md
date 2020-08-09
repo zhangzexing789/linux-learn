@@ -91,7 +91,13 @@ echo is /usr/bin/echo
  `uname -a`或者`cat /proc/version`
  - 系统版本
  `lsb_release -a `
+ 适用于所有的Linux发行版，包括Redhat、SuSE、Debian…等发行版
 
+ `cat /etc/redhat-release`
+只适合Redhat系的Linux
+
+`cat /etc/issue`
+适用于所有的Linux发行版
 
  # 开启防火墙
 
@@ -143,14 +149,17 @@ firewall-cmd --permanent --zone=public --add-port=2222/tcp
 [出现配置hosts文件也能修改hostname](https://www.jb51.net/LINUXjishu/77534.html)
 
 # `su` 与 `sudo` (swich user) 切换用户
- - `su - `
+- `su - `
+
 是`su -l`的缩写，后面接将切换的用户名，不写则默认使用root用户,通过命令`exit`或`logout`，或者是快捷键Crtl+D即可返回原用户身份。`su`也需要该用户加入组`wheel`才有效，否则切换时将不成功并且报错`su: Permission denied`。
 
- - `su -`和`su`
+- `su -`和`su`
+
 su - USERNAME切换用户后，同时切换到新用户的工作环境中
 su USERNAME切换用户后，不改变原用户的工作目录，及其他环境变量目录
 
- - `sudo`
+- `sudo`
+
 是无须登录root，也不需要root密码即可执行root命令，root用户通过使用visudo命令编辑sudo的配置文件/etc/sudoers，才可以授权其他普通用户执行sudo命令。
 
  [参考链接](https://www.cnblogs.com/xd502djj/p/6641475.html)
@@ -237,4 +246,47 @@ bash    16302 root  cwd    DIR   8,17       50   64 /mnt
 
 [解决类似umount target is busy挂载盘卸载不掉问题](https://www.cnblogs.com/ding2016/p/9605526.html)
 
- 
+# shell 脚本中调用环境变量不生效的问题
+
+1. 在用户的profile文件定义环境时没有使用export，此时声明的变量并不是真正的环境变量，不能在后面的shell脚本被调用。 
+
+
+# 修改时区
+
+使用root用户，无需重启
+```
+timedatectl list-timezones |grep -i Hong
+
+timedatectl set-timezone "Asia/Hong_Kong"
+
+timedatectl
+
+```
+
+# yum install 发现/var空间不足
+
+- du -h --max-depth=1 查看占用大的文件
+- 复制文件夹到其他地方
+- 删除原来文件
+- 软链接复制的路径到原路径
+
+https://blog.csdn.net/cloudeagle_bupt/article/details/74887435
+
+
+# 误操作将全局变量 PATH 重置
+在其他服务器复制变量值，使用export 重新指定
+
+# 查看 资源占用最多的进程
+
+- 查看占用内存最多的十个进程
+
+`ps aux|head -1;ps aux|grep -v PID|sort -rn -k +4|head`
+
+- 查看占用cpu最多的十个进程
+
+`ps aux|head -1;ps aux|grep -v PID|sort -rn -k +3|head`
+
+# 查看系统重启时间
+
+https://www.cnblogs.com/kerrycode/p/3759395.html
+

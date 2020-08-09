@@ -178,5 +178,16 @@ chmod g-w /home/infa
 chmod g-w /home/infa/.ssh
 chmod g-w /home/infa/.ssh/authorized_keys
 ```
-## 配置ssh 连接时间
-https://www.cnblogs.com/Black-Hawk/articles/10651895.html
+## 配置ssh session 连接超时不断开
+- root 用户编辑文件sshd_config
+```
+ vi /etc/ssh/sshd_config
+```
+- 配置以下参数
+
+```
+ClientAliveInterval 120 #每隔120秒向客户端发送一个“空包”，以保持于客户端的连接
+ClientAliveCountMax 720 #总共发送720次“空包”，之后断开它们之间的连接，也就是：120秒 × 720 = 86400 秒 = 24小时 后； 注销此句即是不断开连接
+
+```
+[参考链接](https://blog.csdn.net/libaineu2004/article/details/83857779)

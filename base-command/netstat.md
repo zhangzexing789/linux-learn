@@ -1,11 +1,16 @@
-1. 功能
+# netstat
+
+## 功能
+
 用于查看系统的网络信息
 
-2. 用法
+## 用法
+
 netstat (选项)
 
-3. 选项
-```
+## 选项
+
+```shell
 -a或--all：显示所有连线中的Socket；
 -A<网络类型>或--<网络类型>：列出该网络类型连线中的相关地址；
 -c或--continuous：持续列出网络状态；
@@ -30,7 +35,9 @@ netstat (选项)
 -x或--unix：此参数的效果和指定"-A unix"参数相同；
 --ip或--inet：此参数的效果和指定"-A inet"参数相同。
 ```
-4. TCP连接状态
+
+## TCP连接状态
+
 - CLOSED：初始状态，表示没有任何连接。
 - LISTEN：Server端的某个Socket正在监听来自远方的TCP端口的连接请求。
 - SYN_SENT：发送连接请求后等待确认信息。当客户端Socket进行Connect连接时，会首先发送SYN包，随即进入SYN_SENT状态，然后等待Server端发送三次握手中的第2个包。
@@ -43,55 +50,60 @@ netstat (选项)
 - LAST_ACK：被动关闭连接的一方在CLOSE_WAIT状态下完成数据的发送后便可向对方发送FIN包（表示己方不再有数据需要发送），然后等待对方返回ACK包。收到ACK包后便回到CLOSED状态，释放网络资源。
 - CLOSING：比较罕见的例外状态。正常情况下，发送FIN包后应该先收到（或同时收到）对方的ACK包，再收到对方的FIN包，而CLOSING状态表示发送FIN包后并没有收到对方的ACK包，却已收到了对方的FIN包。有两种情况可能导致这种状态：其一，如果双方几乎在同时关闭连接，那么就可能出现双方同时发送FIN包的情况；其二，如果ACK包丢失而对方的FIN包很快发出，也会出现FIN先于ACK到达。
 
+## 实例
 
-5. 实例
- - 显示监听状态的TCP或者UDP端口
- ```
+- 显示监听状态的TCP或者UDP端口
+
+ ```shell
  [root@edc01 ~]# netstat -tl
  Active Internet connections (only servers)
- Proto Recv-Q Send-Q Local Address           Foreign Address         State      
- tcp        0      0 0.0.0.0:25324           0.0.0.0:*               LISTEN     
- tcp        0      0 0.0.0.0:sunrpc          0.0.0.0:*               LISTEN     
- tcp        0      0 0.0.0.0:ssh             0.0.0.0:*               LISTEN     
- tcp6       0      0 [::]:sunrpc             [::]:*                  LISTEN     
- tcp6       0      0 [::]:39057              [::]:*                  LISTEN     
- tcp6       0      0 [::]:36498              [::]:*                  LISTEN     
- tcp6       0      0 [::]:9075               [::]:*                  LISTEN     
- tcp6       0      0 [::]:6005               [::]:*                  LISTEN     
- tcp6       0      0 [::]:6006               [::]:*                  LISTEN       
+ Proto Recv-Q Send-Q Local Address           Foreign Address         State
+ tcp        0      0 0.0.0.0:25324           0.0.0.0:*               LISTEN
+ tcp        0      0 0.0.0.0:sunrpc          0.0.0.0:*               LISTEN
+ tcp        0      0 0.0.0.0:ssh             0.0.0.0:*               LISTEN
+ tcp6       0      0 [::]:sunrpc             [::]:*                  LISTEN
+ tcp6       0      0 [::]:39057              [::]:*                  LISTEN
+ tcp6       0      0 [::]:36498              [::]:*                  LISTEN
+ tcp6       0      0 [::]:9075               [::]:*                  LISTEN
+ tcp6       0      0 [::]:6005               [::]:*                  LISTEN
+ tcp6       0      0 [::]:6006               [::]:*                  LISTEN
  ```
 
-  - 获取进程名、进程号以及用户 ID
+- 获取进程名、进程号以及用户 ID
   `-ep` 获得进程信息和用户名，使用`root`权限或者`root`用户才会显示所有的端口信息
-  ```
+
+ ```shell
   [root@edc01 ~]# netstat -tlep
   Active Internet connections (only servers)
-  Proto Recv-Q Send-Q Local Address           Foreign Address         State       User       Inode      PID/Program name    
-  tcp        0      0 0.0.0.0:25324           0.0.0.0:*               LISTEN      omsagent   38470      7268/ruby           
-  tcp        0      0 0.0.0.0:sunrpc          0.0.0.0:*               LISTEN      root       41286      1/systemd           
-  tcp        0      0 0.0.0.0:ssh             0.0.0.0:*               LISTEN      root       36292      6771/sshd           
-  tcp6       0      0 [::]:sunrpc             [::]:*                  LISTEN      root       41288      1/systemd           
-  tcp6       0      0 [::]:39057              [::]:*                  LISTEN      infa       96617      12730/java          
-  tcp6       0      0 [::]:36498              [::]:*                  LISTEN      infa       111864     12730/java          
-  tcp6       0      0 [::]:9075               [::]:*                  LISTEN      infa       99657      13003/java          
-  tcp6       0      0 [::]:6005               [::]:*                  LISTEN      infa       100432     12376/java    
+  Proto Recv-Q Send-Q Local Address           Foreign Address         State       User       Inode      PID/Program name
+  tcp        0      0 0.0.0.0:25324           0.0.0.0:*               LISTEN      omsagent   38470      7268/ruby
+  tcp        0      0 0.0.0.0:sunrpc          0.0.0.0:*               LISTEN      root       41286      1/systemd
+  tcp        0      0 0.0.0.0:ssh             0.0.0.0:*               LISTEN      root       36292      6771/sshd
+  tcp6       0      0 [::]:sunrpc             [::]:*                  LISTEN      root       41288      1/systemd
+  tcp6       0      0 [::]:39057              [::]:*                  LISTEN      infa       96617      12730/java
+  tcp6       0      0 [::]:36498              [::]:*                  LISTEN      infa       111864     12730/java
+  tcp6       0      0 [::]:9075               [::]:*                  LISTEN      infa       99657      13003/java
+  tcp6       0      0 [::]:6005               [::]:*                  LISTEN      infa       100432     12376/java
   ```
 
   `-n`和`-e`一起使用将显示user ID
-  ```
+
+  ```shell
   [root@edc01 ~]# netstat -tlnep
 Active Internet connections (only servers)
-Proto Recv-Q Send-Q Local Address           Foreign Address         State       User       Inode      PID/Program name    
-tcp        0      0 0.0.0.0:25324           0.0.0.0:*               LISTEN      995        38470      7268/ruby           
-tcp        0      0 0.0.0.0:111             0.0.0.0:*               LISTEN      0          41286      1/systemd           
-tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      0          36292      6771/sshd           
-tcp6       0      0 :::6023                 :::*                    LISTEN      1000       536035     17031/java          
-tcp6       0      0 :::6024                 :::*                    LISTEN      1000       538028     17031/java          
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       User       Inode      PID/Program name
+tcp        0      0 0.0.0.0:25324           0.0.0.0:*               LISTEN      995        38470      7268/ruby
+tcp        0      0 0.0.0.0:111             0.0.0.0:*               LISTEN      0          41286      1/systemd
+tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      0          36292      6771/sshd
+tcp6       0      0 :::6023                 :::*                    LISTEN      1000       536035     17031/java
+tcp6       0      0 :::6024                 :::*                    LISTEN      1000       538028     17031/java
 tcp6       0      0 :::8105                 :::*                    LISTEN      1000       541768     16899/java  
   ```
-  - 打印网络接口详细信息
+
+- 打印网络接口详细信息
   使用`-ei`
-  ```
+
+ ```shell
   [root@edc01 ~]# netstat -ei
 Kernel Interface table
   eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
@@ -104,53 +116,58 @@ Kernel Interface table
         TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
   ```
 
-  - 查看服务是否运行
+- 查看服务是否运行
+
 配合`grep`查看服务,如ntp,http,https
-```
+
+```shell
 [infa@edchadoop01 edc_hdp]$ netstat -aple|grep ntp
 (Not all processes could be identified, non-owned process info
  will not be shown, you would have to be root to see it all.)
-udp        0      0 edchadoop01.ub4csk0:ntp 0.0.0.0:*                           ntp        39662      -                   
-udp        0      0 localhost:ntp           0.0.0.0:*                           root       43055      -                   
-udp        0      0 0.0.0.0:ntp             0.0.0.0:*                           root       43049      -                   
-udp6       0      0 edchadoop01:ntp         [::]:*                              ntp        39663      -                   
-udp6       0      0 localhost:ntp           [::]:*                              root       43056      -                   
-udp6       0      0 [::]:ntp                [::]:*                              root       43050      -                   
+udp        0      0 edchadoop01.ub4csk0:ntp 0.0.0.0:*                           ntp        39662      -
+udp        0      0 localhost:ntp           0.0.0.0:*                           root       43055      -
+udp        0      0 0.0.0.0:ntp             0.0.0.0:*                           root       43049      -
+udp6       0      0 edchadoop01:ntp         [::]:*                              ntp        39663      -
+udp6       0      0 localhost:ntp           [::]:*                              root       43056      -
+udp6       0      0 [::]:ntp                [::]:*                              root       43050      -
 ```
+
 - 持续监控监听端口的启动情况
-```
+
+```shell
 > netstat -ltc
 ```
+
 - 查看某个端口或者IP的连接情况
-```
+
+```shell
 > netstat -anp | grep 60008
 
 (Not all processes could be identified, non-owned process info
  will not be shown, you would have to be root to see it all.)
-tcp6       0      0 :::60008                :::*                    LISTEN      36337/java          
-tcp6       0      0 10.238.18.4:60008       10.238.16.132:49430     ESTABLISHED 36337/java          
-tcp6       0      0 10.238.18.4:60008       10.238.16.132:49319     TIME_WAIT   -                   
-tcp6       0      0 10.238.18.4:60008       10.238.16.145:62421     ESTABLISHED 36337/java          
-tcp6       0      0 10.238.18.4:60008       10.238.16.145:62755     ESTABLISHED 36337/java          
-tcp6       0      0 10.238.18.4:60008       10.238.16.132:64724     ESTABLISHED 36337/java          
-tcp6       0      0 10.238.18.4:60008       10.238.16.132:64942     ESTABLISHED 36337/java          
+tcp6       0      0 :::60008                :::*                    LISTEN      36337/java
+tcp6       0      0 10.238.18.4:60008       10.238.16.132:49430     ESTABLISHED 36337/java
+tcp6       0      0 10.238.18.4:60008       10.238.16.132:49319     TIME_WAIT   -
+tcp6       0      0 10.238.18.4:60008       10.238.16.145:62421     ESTABLISHED 36337/java
+tcp6       0      0 10.238.18.4:60008       10.238.16.145:62755     ESTABLISHED 36337/java
+tcp6       0      0 10.238.18.4:60008       10.238.16.132:64724     ESTABLISHED 36337/java
+tcp6       0      0 10.238.18.4:60008       10.238.16.132:64942     ESTABLISHED 36337/java
 tcp6       0      0 10.238.18.4:60008       10.238.16.145:62420     ESTABLISHED 36337/java
 ```
+
 - 统计TCP连接数
 
-```
+```shell
 > netstat -n | awk '/^tcp/ {++S[$NF]} END {for(a in S) print a, S[a]}'
 
 ESTABLISHED 751
 TIME_WAIT 789
 
-```
 或者
-```
+
 > ss -s
 
 Total: 1453 (kernel 0)
 TCP:   1540 (estab 751, closed 725, orphaned 0, synrecv 0, timewait 721/0), ports 0
 
 ```
-

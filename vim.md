@@ -55,6 +55,7 @@ ctrl+r 重做
 == 自动缩进当前行
 
 # 查找替换
+:set nu 显示行数
 /pattern 向后搜索字符串pattern
 ?pattern 向前搜索字符串pattern
 "\c" 忽略大小写
@@ -197,3 +198,19 @@ R 移动文件
 :Vexplore
 
 [vim快捷键](https://www.cnblogs.com/markleaf/p/7808817.html)
+
+# 批量缩进
+
+按下'v'进入选择模式，移动光标即可实现选中，再按一次大于号'>'缩进一次，按'6>'缩进六次，按'<'回缩
+
+[vim 批量缩进代码](https://www.cnblogs.com/shengulong/p/9205829.html)
+
+
+# 注释
+
+```
+:<<!
+注释内容
+!
+
+```

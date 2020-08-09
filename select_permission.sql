@@ -202,3 +202,13 @@ left join
         sys.database_permissions perm
 on      perm.grantee_principal_id = princ.principal_id
 where princ.name='gosesdeid901' or princ.name='gosesdeid902'
+
+-----------------
+SELECT state_desc, permission_name, 'ON', class_desc,
+SCHEMA_NAME(major_id),
+'TO', USER_NAME(grantee_principal_id)
+FROM sys.database_permissions AS Perm
+JOIN sys.database_principals AS Prin
+ON Perm.major_ID = Prin.principal_id AND class_desc = 'SCHEMA'
+WHERE major_id = SCHEMA_ID('schemaname')
+AND grantee_principal_id = user_id('username')
