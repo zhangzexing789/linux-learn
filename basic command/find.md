@@ -19,6 +19,7 @@ find　（参数）（选项）即 find  [指定查找目录]  [查找规则]  [
 
 ```shell
 -name: 按照给定的字符串查找
+-maxdepth 1： 限制当前目录
 -iname: 不区分大小写查找
 通配符说明：*　用于匹配任意字符；？　用于匹配任意单个字符；[] 用于匹配括号内的任意一个字符
 ```
@@ -101,6 +102,11 @@ asnphtl@CIGWKL7251BVV /$ find /joson/ /home/ASNPHTL/ -name 'test*'
 /joson/test.txt
 /joson/test1
 /home/ASNPHTL/test
+```
+
+- 查找当前目录
+```shell
+find . -maxdepth 1 -name '*.sh'
 ```
 
 - stat 命令

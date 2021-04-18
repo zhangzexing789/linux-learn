@@ -214,3 +214,7 @@ R 移动文件
 !
 
 ```
+
+# 使用vim 查看和文件编码转换
+  - 查看：`:set fileencoding`
+  - 转换为utf-8：`:set fileencoding=utf-8`
