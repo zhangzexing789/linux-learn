@@ -3,6 +3,7 @@
     - <frequency-in-seconds> 收集的间隔时间（秒）
     - [<number-of-iterations>] 收集的次数，不指定的话将一直收集直至停止
 
+> sysmon.sh
 ```shell
 #!/bin/bash
 

@@ -23,6 +23,11 @@ GPT(GUID Partition Table)，这是最近几年逐渐流行起来的一种分区�
 - 更为健壮。MBR 中分区信息和启动信息保存在一起而且只有一份，GPT 在整个磁盘上保存多份这个信息，并为它们提供 CRC 检验，当有数据损坏时，它能够进行恢复。
 
 
+## 检查磁盘挂载情况
+
+```
+ls -al /dev/disk/by-uuid/
+```
 
 ## mount new disk less than 2T
 ```
