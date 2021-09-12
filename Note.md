@@ -418,3 +418,32 @@ CLUSTER_STATUS=`sh /infa/infa_shared/HalleyCommon/HDInsight/getClustersInf.sh|aw
 
 # 查看系统安全相关日志
 /var/log/secure, /var/log/messages
+
+# 执行shell脚本的三种方式
+- 切换到shell脚本所在的目录（此时，称为工作目录）执行shell脚本。
+```
+cd /data/shell
+./hello.sh
+```
+- 以绝对路径的方式去执行bash shell脚本, 脚本必须有执行`x`的权限。
+```
+/data/shell/hello.sh
+```
+- 直接使用bash 或sh 来执行bash shell脚本。这是将hello.sh作为参数传给sh(bash)命令来执行的，不是hello.sh自己来执行，而是被人家调用执行，所以不要执行权限,也不需要声明解释器，即不用指定bash路径。
+```
+cd /data/shell
+bash hello.sh
+cd /data/shell
+sh hello.sh
+# 或者
+bash /data/shell/hello.sh
+sh /data/shell/hello.sh
+```
+- 在当前的bash环境中执行bash shell脚本。前三种方法执行shell脚本时都是在当前bash（称为父bash）开启一个子bash环境，此shell脚本就在这个子bash环境中执行。shell脚本执行完后子bash环境随即关闭，然后又回到父bash中。而方法四则是在当前bash 进程中执行的，可以用`echo $$` 输出当前bash的进程id进行验证。
+```
+cd /data/shell
+. hello.sh
+# 或者
+cd /data/shell
+source hello.sh
+```

@@ -1,11 +1,11 @@
-- 这个脚本将收集命令的输出：top output, vmstat output, ps output and disk space output
-- 参数：
-    - <frequency-in-seconds> 收集的间隔时间（秒）
-    - [<number-of-iterations>] 收集的次数，不指定的话将一直收集直至停止
+#!/usr/bin/env bash
 
-> sysmon.sh
-```shell
-#!/bin/bash
+# 功能：收集 top, vmstat, ps, disk space, netstat, loadavg, runnables, iostat and lsof 的输出，
+# 将该脚本加入后台执行，可实时的收集指定的系统指标的日志数据。
+# 默认收集全部类型的日志，可以对 log "Woke up!" 后面的执行语句进行注释或者修改来满足特定的日志收集需求。
+# 参数：<收集的间隔时间（秒> [收集的次数，不指定的话将一直收集直至停止]
+# 例子：
+#   sh sysmon.sh 1 3 #收集3次，每次间隔1s。
 
 if [ $# -lt 1 ]
 then
@@ -103,12 +103,12 @@ do
     log_and_exec "top" "top -b -n 1" 
     log_and_exec "vmstat" "vmstat 1 2 | tail -1"
     log_and_exec "Disk" "df -hT"
-   #log_and_exec "netstat" "netstat -as" 
-   #log_and_exec "netstat" "netstat -peano" 
-   #log_and_exec "loadavg" "cat /proc/loadavg" 
-   #log_and_exec "runnables" "ps -eLo state,pid,tid,cpu,comm,time,args | egrep '^(R|D)'" 
-   #log_and_exec "iostat" "iostat -x 1 2"
-   #log_and_exec "lsof" "lsof"
+    log_and_exec "netstat" "netstat -as" 
+    log_and_exec "netstat" "netstat -peano" 
+    log_and_exec "loadavg" "cat /proc/loadavg" 
+    log_and_exec "runnables" "ps -eLo state,pid,tid,cpu,comm,time,args | egrep '^(R|D)'" 
+    log_and_exec "iostat" "iostat -x 1 2"
+    log_and_exec "lsof" "lsof"
     log "Zzzzz"
     if [ $ITERATIONS -ne 0 ]
     then
@@ -118,4 +118,3 @@ do
 done
 
 log "Sysmon completed $ITERATIONS iterations. Halting!"
-```

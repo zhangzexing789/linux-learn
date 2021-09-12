@@ -1,16 +1,19 @@
-- 用于同步分发多个服务器之间的文件或者目录，前提这些服务器已经实现相互免密登录
-- 参数：<目标文件或者目录> 输入需要同步的文件或者目录
+#!/usr/bin/env bash
 
-> rsync.sh
-```shell
-#!/bin/bash
+# 功能：用于同步分发多个服务器之间的文件或者目录，前提这些服务器已经实现相互免密登录
+# 参数：<目标文件或者目录>
+# 例子：
+#   sh rsync.sh hell.txt
+#   sh rsync.sh /data/
+
 #1. 判断参数个数
 if [ $# -lt 1 ];then
     echo "Usage: rsync.sh <目标文件或者目录>"
     exit 1
 fi
 #2. 遍历集群所有机器,这里指定要同步的服务器名
-for host in GOAZESLAP0038; do
+for host in hostname1; do
+#for host in {"hostname1","hostname2"}; do
     echo ==================== $host ====================
     #3. 遍历所有目录，挨个发送
     for file in $@; do
@@ -27,5 +30,3 @@ for host in GOAZESLAP0038; do
         fi
     done
 done
-
-```
