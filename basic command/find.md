@@ -89,8 +89,9 @@ G —— 吉字节
 -ls                                     //查找到后用ls 显示出来
 -ok  [commend]                //查找后执行命令的时候询问用户是否要执行
 -exec [commend]              //查找后执行命令的时候不询问用户，直接执行.当 find 结果为true时， 执行后面的命令 ，{} 表示搜索得到的结果
-find .-type f -user root -exec chown tom {} \;    将root所属的文件变更其所有权为用户 tom
-find . -name '*.txt' -ok rm {} \;     删除当前目录及其子目录下的txt文件
+find .-type f -user root -exec chown tom {} \;    #将root所属的文件变更其所有权为用户 tom
+find . -name '*.txt' -ok rm {} \;     #删除当前目录及其子目录下的txt文件
+find ./ -name "*.txt" -exec sed -i 's/oldString/newString/g' {} \; #对所有txt 文件进行内容替换
 ```
 
 ## 实例
@@ -109,16 +110,3 @@ asnphtl@CIGWKL7251BVV /$ find /joson/ /home/ASNPHTL/ -name 'test*'
 find . -maxdepth 1 -name '*.sh'
 ```
 
-- stat 命令
-
-```shell
-asnphtl@CIGWKL7251BVV /joson$ stat /joson/test.txt
-  File: /joson/test.txt
-  Size: 16              Blocks: 1          IO Block: 65536  regular file
-Device: fac6d503h/4207334659d   Inode: 22236523160400909  Links: 1
-Access: (0755/-rwxr-xr-x)  Uid: (1446641/ asnphtl)   Gid: (1049089/Domain Users)
-Access: 2019-05-28 09:10:38.417681600 +0800
-Modify: 2019-05-28 10:43:28.206121200 +0800   #文件内容修改时间
-Change: 2019-05-28 10:44:06.203121200 +0800   #文件内容或者权限修改时间
- Birth: 2019-05-28 09:10:38.417681600 +0800
-```

@@ -1,6 +1,8 @@
 [TOC]
 
-# 变量
+# Note
+
+## 变量
  - 定义变量时等号两边都不能接空格
  `test =shell`将报错
  - 可以使用单引号`''`或者双引号`""`定义带空格的变量
@@ -19,7 +21,7 @@ shell hello
  - 若该变量需要在其他子程序执行，则 需要以 export 来使变量变成环境变量
  - 取消变量的方法为使用 unset ：`unset 变量名称`例如取消
 
-# 变量的分类
+## 变量的分类
  - 内部变量：系统提供，不用定义，不能修改
  ```
  $n     $1 表示第一个参数，$2 表示第二个参数 ...
@@ -36,7 +38,7 @@ shell hello
     - 用户设置，由export命令导出的
  - 用户变量（私有变量,本地变量）：用户定义，可以修改
 
-# 变量命令
+## 变量命令
  - set：显示当前 Shell 所有变量，包括其内建环境变量（与 Shell 外观等相关），用户自定义变量及导出的环境变量，即包含了 env 和 export 命令的变量。
  - env：显示当前用户的环境变量
  - export：显示(设置)当前导出成环境变量的shell变量(注意：export为bash或类bash私有的命令)
@@ -59,7 +61,7 @@ shell hello
 
  ```
 
-# 命令的执行顺序
+## 命令的执行顺序
  a. 以相对 绝对路径执行指令，例如『 /bin/ls 』或『 ./ls 』；
  b. 由 alias 找到该指令来执行；
  c. 由 bash 内建的 (builtin) 指令来执行；
@@ -74,7 +76,7 @@ echo is /usr/bin/echo
  ```
  以上的echo命令就是按照alias，builtin，$PATH的顺序去查找echo指令
 
-# 编辑 .profile 文件出生成 .profile.swp 文件
+## 编辑 .profile 文件出生成 .profile.swp 文件
 
  由于vi /etc/profile还没有编辑完成，保存退出，突然断电 或其他原因导致编辑窗口关闭了，系统为保护文件，产生一个备份文件/etc/.profile.swp，保存着上次未保存时的文件状态，在下次使用vi打开/etc/profile就会读取到/etc/.profile.swp出现这种警告。
 
@@ -88,7 +90,7 @@ echo is /usr/bin/echo
 
  选择操作后要删除.profile.swp 文件。
 
- # 查看linux 版本
+ ## 查看linux 版本
  - 内核版本
  `uname -a`或者`cat /proc/version`
  - 系统版本
@@ -101,7 +103,7 @@ echo is /usr/bin/echo
 `cat /etc/issue`
 适用于所有的Linux发行版
 
- # 开启防火墙
+ ## 开启防火墙
 
 使用命令行工具`firewall-cmd`进行管理
  - 默认已安装或者root用户使用`yum install -y firewalld`进行安装
@@ -143,14 +145,14 @@ remember to restart firewall service
 firewall-cmd --permanent --zone=public --add-port=2222/tcp
 ```
 
-# /etc/hosts , /etc/hostname 和 /etc/sysconfig/network
+## /etc/hosts , /etc/hostname 和 /etc/sysconfig/network
 
 - /etc/hostname和/etc/sysconfig/network用于修改主机名，hostname直接用newhostname替换，network则修改HOSTNAME=NEWNAME，需要重启系统。
 - /etc/hosts 是域名解析文件
 
 [出现配置hosts文件也能修改hostname](https://www.jb51.net/LINUXjishu/77534.html)
 
-# `su` 与 `sudo` (swich user) 切换用户
+## `su` 与 `sudo` (swich user) 切换用户
 - `su - `
 
 是`su -l`的缩写，后面接将切换的用户名，不写则默认使用root用户,通过命令`exit`或`logout`，或者是快捷键Crtl+D即可返回原用户身份。`su`也需要该用户加入组`wheel`才有效，否则切换时将不成功并且报错`su: Permission denied`。
@@ -166,17 +168,17 @@ su USERNAME切换用户后，不改变原用户的工作目录，及其他环境
 
  [参考链接](https://www.cnblogs.com/xd502djj/p/6641475.html)
 
-# 使用vim 查看和文件编码转换
+## 使用vim 查看和文件编码转换
   - 查看：`:set fileencoding`
   - 转换为utf-8：`:set fileencoding=utf-8`
 
-# 查看用户的所属组
+## 查看用户的所属组
 ```
 groups 查看当前登录用户的组内成员
 groups gliethttp 查看gliethttp用户所在的组,以及组内成员
 whoami 查看当前登录用户名
 ```
-# lost+found 文件夹
+## lost+found 文件夹
 
 lost+found 是一个特殊目录，用途是用来存放文件系统错误导致文件丢失后找回数据的，用来存放fsck过程中部分修复的文件的。
 这个目录在分区的根目录上（注意是分区的，而不是整个系统的）。
@@ -187,7 +189,7 @@ ext2/3/4 就有这个目录，但是有些文件系统没有这个目录，比�
 
 [相关链接](https://www.jianshu.com/p/417ba2d7a4b3)
 
-# 处理 umount target is busy 挂载盘卸载不掉问题
+## 处理 umount target is busy 挂载盘卸载不掉问题
 
 Linux下挂载后的分区或者磁盘某些时候需要umount的时候出现类似“umount: /mnt: target is busy.”等字样，或者“umount: /xxx: device is busy.”。
 
@@ -248,12 +250,12 @@ bash    16302 root  cwd    DIR   8,17       50   64 /mnt
 
 [解决类似umount target is busy挂载盘卸载不掉问题](https://www.cnblogs.com/ding2016/p/9605526.html)
 
-# shell 脚本中调用环境变量不生效的问题
+## shell 脚本中调用环境变量不生效的问题
 
 1. 在用户的profile文件定义环境时没有使用export，此时声明的变量并不是真正的环境变量，不能在后面的shell脚本被调用。 
 
 
-# 修改时区
+## 修改时区
 
 使用root用户，无需重启
 ```
@@ -265,7 +267,7 @@ timedatectl
 
 ```
 
-# yum install 发现/var空间不足
+## yum install 发现/var空间不足
 
 - du -h --max-depth=1 查看占用大的文件
 - 复制文件夹到其他地方
@@ -275,10 +277,10 @@ timedatectl
 https://blog.csdn.net/cloudeagle_bupt/article/details/74887435
 
 
-# 误操作将全局变量 PATH 重置
+## 误操作将全局变量 PATH 重置
 在其他服务器复制变量值，使用export 重新指定
 
-# 查看 资源占用最多的进程
+## 查看 资源占用最多的进程
 
 - 查看占用内存最多的十个进程
 
@@ -288,11 +290,11 @@ https://blog.csdn.net/cloudeagle_bupt/article/details/74887435
 
 `ps aux|head -1;ps aux|grep -v PID|sort -rn -k +3|head`
 
-# 查看系统重启时间
+## 查看系统重启时间
 
 https://www.cnblogs.com/kerrycode/p/3759395.html
 
-# mount new disk
+## mount new disk
 
 ```
 [godesladm1@GOAZEDLAP0067 ~]$ sudo fdisk /dev/sdc
@@ -410,16 +412,16 @@ tmpfs            13G     0   13G   0% /run/user/1029
 /dev/sdc1       /infa   ext4    defaults        0 0
 [godesladm1@GOAZEDLAP0067 ~]$ sudo reboot
 ```
-# 将awk结果赋予变量
+## 将awk结果赋予变量
 ```
 CLUSTER_STATUS=`sh /infa/infa_shared/HalleyCommon/HDInsight/getClustersInf.sh|awk '/clusterState/ {print $0}'`
 ```
 执行语句加上``，不然会直接print到界面。
 
-# 查看系统安全相关日志
+## 查看系统安全相关日志
 /var/log/secure, /var/log/messages
 
-# 执行shell脚本的三种方式
+## 执行shell脚本的三种方式
 - 切换到shell脚本所在的目录（此时，称为工作目录）执行shell脚本。
 ```
 cd /data/shell
@@ -447,3 +449,27 @@ cd /data/shell
 cd /data/shell
 source hello.sh
 ```
+## 命令 /bin/sh -c "<command>"
+
+1. 作用：接收一连串的命令，并执行。
+如：`/bin/sh -c "echo hello"` 和 `echo hello` 是一样的效果。
+2. 区别：双引号里面的命令将会被当作一个整体执行。
+比如一个只有root用户才有权限写的文件`test.txt`, 使用`sudo echo hello > test.txt` 仍然会报`Permission denied`权限不足的错误，这是因为重定向符号 “>” 和 ">>" 也是 bash 的命令。我们使用 sudo 只是让 `echo` 命令具有了 root 权限，但是没有让 `>` 和 `>>` 命令也具有 root 权限，所以 bash 会认为这两个命令都没有文件写入信息的权限。此时可以用`sudo /bin/sh -c "echo hello > test.txt"`解决。
+另一种方法是利用管道和 tee 命令，该命令可以从标准输入中读入信息并将其写入标准输出或文件中，具体用法如下：
+`echo "hello" | sudo tee -a test.txt`
+注意，tee 命令的 "-a" 选项的作用等同于 `>>` 命令，如果去除该选项，那么 tee 命令的作用就等同于 `>` 命令。
+
+## shell 参数说明
+
+- `$0`: 执行的文件名（包含文件路径）
+- `$n`: n 代表一个数字，1 为执行脚本的第一个参数，2 为执行脚本的第二个参数，以此类推.
+- `$#`:	传递到脚本的参数个数
+- `$*`:	以一个单字符串显示所有向脚本传递的参数。
+如"$*"用「"」括起来的情况、以"$1 $2 … $n"的形式输出所有参数。
+- `$$`:	脚本运行的当前进程ID号
+- `$!`:	后台运行的最后一个进程的ID号
+- `$@`:	与`$*`相同，但是使用时加引号，并在引号中返回每个参数。
+如"$@"用「"」括起来的情况、以"$1" "$2" … "$n" 的形式输出所有参数。
+- `$-`:	显示Shell使用的当前选项，与set命令功能相同。
+- `$?`:	显示最后命令的退出状态。0表示没有错误，其他任何值表明有错误。
+

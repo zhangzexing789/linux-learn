@@ -30,8 +30,8 @@ ls -al /dev/disk/by-uuid/
 ```
 
 ## mount new disk less than 2T
-```
-[godesladm1@GOAZEDLAP0067 ~]$ sudo fdisk /dev/sdc #
+```shell
+[user01@host01 ~]$ sudo fdisk /dev/sdc #
 Welcome to fdisk (util-linux 2.23.2).
 
 Changes will remain in memory only, until you decide to write them.
@@ -59,7 +59,7 @@ Command action
    p   print the partition table
    q   quit without saving changes
    s   create a new empty Sun disklabel
-   t   change a partition's system id
+   t   change a partition system id
    u   change display/entry units
    v   verify the partition table
    w   write table to disk and exit
@@ -95,7 +95,8 @@ The partition table has been altered!
 
 Calling ioctl() to re-read partition table.
 Syncing disks.
-[godesladm1@GOAZEDLAP0067 ~]$ sudo mkfs.ext4 /dev/sdc1 #格式化分区
+[user01@host01 ~]$ sudo mkfs.ext4 /dev/sdc1 
+# 格式化分区,这是因为每种操作系统所设定的文件属性/权限并不相同， 为了存放这些档案所需的数据，因此就需要将分割槽进行格式化，以成为操作系统能够利用的『文件系统格式(filesystem)』。 由此我们也能够知道，每种操作系统能够使用的文件系统不相同。 比如windows 98 以前的微软操作系统主要利用的文件系统是 FAT (或者 FAT16)，windows 2000 以后的版本有所谓的 NTFS 文件系统，至于 Linux 的正统文件系统则为 Ext2 (Linux second extended file system, ext2fs)。此外，在默认情冴下，windows 操作系统是不会认识 Linux 的Ext2 的。
 mke2fs 1.42.9 (28-Dec-2013)
 Discarding device blocks: done
 Filesystem label=
@@ -119,9 +120,9 @@ Writing inode tables: done
 Creating journal (32768 blocks): done
 Writing superblocks and filesystem accounting information: done
 
-[godesladm1@GOAZEDLAP0067 ~]$ sudo mkdir /infa #创建目录
-[godesladm1@GOAZEDLAP0067 ~]$ sudo mount /dev/sdc1 /infa #磁盘挂载到目录
-[godesladm1@GOAZEDLAP0067 ~]$ df -h
+[user01@host01 ~]$ sudo mkdir /infa #创建目录
+[user01@host01 ~]$ sudo mount /dev/sdc1 /infa #磁盘挂载到目录
+[user01@host01 ~]$ df -h
 Filesystem      Size  Used Avail Use% Mounted on
 devtmpfs         63G     0   63G   0% /dev
 tmpfs            63G     0   63G   0% /dev/shm
@@ -141,20 +142,20 @@ tmpfs            63G     0   63G   0% /sys/fs/cgroup
 tmpfs            13G     0   13G   0% /run/user/995
 tmpfs            13G     0   13G   0% /run/user/1029
 /dev/sdc1       126G   61M  120G   1% /infa
-[godesladm1@GOAZEDLAP0067 infa]$ sudo chown -R godesladm1:sysadmg00 /infa #目录赋权
-[godesladm1@GOAZEDLAP0067 infa]$ sudo blkid #查看所有磁盘的UUID
+[user01@host01 infa]$ sudo chown -R user01:sysadmg00 /infa #目录赋权
+[user01@host01 infa]$ sudo blkid #查看所有磁盘的UUID
 /dev/sdb1: UUID="6634633e-001d-43ba-8fab-202f1df93339" TYPE="ext4"
 /dev/sdc1: UUID="d4993a37-4a33-4c95-95de-9711413196c0" TYPE="ext4"
-[godesladm1@GOAZEDLAP0067 ~]$ sudo vi /etc/fstab #编辑文件添加映射关系，重启自动挂载
+[user01@host01 ~]$ sudo vi /etc/fstab #编辑文件添加映射关系，重启自动挂载
 #/dev/sdc1 /infa   ext4    defaults        0 0 # 不建议使用这种方式，重启后盘号可能会改变
 UUID="d4993a37-4a33-4c95-95de-9711413196c0"    /infa   ext4    defaults        0 0
-[godesladm1@GOAZEDLAP0067 ~]$ sudo reboot #可不用重启
+[user01@host01 ~]$ sudo reboot #可不用重启
 ```
 
 ## mount new disk more than 2T
 ```
-[root@GOAZESLAP0016 ~]# umount /infa_shared 
-[root@GOAZESLAP0016 ~]# parted /dev/sde #对磁盘进行分区操作
+[root@host01 ~]# umount /infa_shared 
+[root@host01 ~]# parted /dev/sde #对磁盘进行分区操作
 GNU Parted 3.1
 Using /dev/sde
 Welcome to GNU Parted! Type 'help' to view a list of commands.
@@ -187,7 +188,7 @@ Number  Start   End     Size    File system  Name     Flags
 (parted) quit                                                             
 Information: You may need to update /etc/fstab.
        
-[root@GOAZESLAP0016 ~]# fdisk -l /dev/sde #查看分区情况
+[root@host01 ~]# fdisk -l /dev/sde #查看分区情况
 WARNING: fdisk GPT support is currently new, and therefore in an experimental phase. Use at your own discretion.
 
 Disk /dev/sde: 4398.0 GB, 4398046511104 bytes, 8589934592 sectors
@@ -201,7 +202,7 @@ Disk identifier: 56735FDA-B6C1-4454-98D6-DBE8CA63137D
 #         Start          End    Size  Type            Name
  1           34   8589934558      4T  Microsoft basic primary
 Partition 1 does not start on physical sector boundary. 
-[root@GOAZESLAP0016 ~]# mkfs.ext4 /dev/sde1 #格式化分区
+[root@host01 ~]# mkfs.ext4 /dev/sde1 #格式化分区
 mke2fs 1.42.9 (28-Dec-2013)
 /dev/sde1 alignment is offset by 3072 bytes.
 This may result in very poor performance, (re)-partitioning suggested.
@@ -228,8 +229,8 @@ Writing inode tables: done
 Creating journal (32768 blocks): done
 Writing superblocks and filesystem accounting information: done       
 
-[root@GOAZESLAP0016 ~]# mount /dev/sde1 /infa_shared #挂载分区
-[root@GOAZESLAP0016 ~]# ls -l /dev/disk/by-uuid/ #查看UUID
+[root@host01 ~]# mount /dev/sde1 /infa_shared #挂载分区
+[root@host01 ~]# ls -l /dev/disk/by-uuid/ #查看UUID
 total 0
 lrwxrwxrwx. 1 root root 10 Feb 26 09:53 073eaa17-5ac5-4017-855f-5b067864004d -> ../../sdc1
 lrwxrwxrwx. 1 root root 10 Feb 22 13:39 233e5dcb-51f0-48b1-a941-e948ed6ec8ec -> ../../dm-4
@@ -240,7 +241,7 @@ lrwxrwxrwx. 1 root root 10 Feb 22 13:39 83266738-232f-4daa-b442-a3e0bdbc1979 -> 
 lrwxrwxrwx. 1 root root 10 Feb 22 13:39 8d4f8350-fec9-465b-9c15-945032f09d8e -> ../../dm-0
 lrwxrwxrwx. 1 root root 10 Feb 22 13:39 b8f675fe-6736-484e-b34a-edba5f85080a -> ../../dm-2
 lrwxrwxrwx. 1 root root 11 Feb 22 13:39 F3D4-BA52 -> ../../sda15
-[root@GOAZESLAP0016 ~]#  vi /etc/fstab #设置开机自动挂载磁盘
+[root@host01 ~]#  vi /etc/fstab #设置开机自动挂载磁盘
 
 UUID=****** /infa_shared  ext4   defaults  0 0
 
